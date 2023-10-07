@@ -1,0 +1,3 @@
+[submodule "vendor/iv-sdk"]
+	path = vendor/iv-sdk
+	url = git@github.com:zolika1351/iv-sdk
