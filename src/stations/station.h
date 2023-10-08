@@ -6,6 +6,8 @@
 
 #include "core/scopedlogger.h"
 
+#define ENTRANCE_RADIUS 1.5
+
 struct Vector
 {
     float x, y, z;
@@ -20,19 +22,34 @@ public:
     CVector* m_pCarChooseVector;
     float m_fCarChooseHeading;
     
-    bool m_bHasPlacedBlip;
-    Scripting::Blip m_mapBlipHandle;
-    Scripting::Blip m_groundBlipHandle;
+    bool m_bHasBlip;
+    bool m_bHasCheckpoint;
+
+    Scripting::Blip m_nBlipHandle;
+    int m_nCheckpointHandle;
 
 
     CStation(Vector blip, Vector choose, float heading);
     ~CStation();
 
-    void placeBlip();
-    void removeBlip();
+    // control rendering
+    void show();
+    void hide();
 
-    void placeEntrance();
-    void removeEntrance();
+    // true if we are standing in the checkpoit
+    // of this station (2d), false otherwise 
+    bool inCheckpointBounds();
+
+    // do rendering work each tick
+    void render();
+
+    void _placeBlip();
+    void _removeBlip();
+
+    void _drawCheckpoint();
+
+    void _placeEntrance();
+    void _removeEntrance();
 };
 
 #endif _STATION_H
