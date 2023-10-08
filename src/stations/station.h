@@ -14,7 +14,7 @@ struct Vector
 class CStation
 {
 public:
-    static CScopedLogger* g_log;
+    static CScopedLogger* ms_pLogger;
 
     CVector* m_pBlipVector;
     CVector* m_pCarChooseVector;

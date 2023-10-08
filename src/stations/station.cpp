@@ -1,7 +1,7 @@
 #include "station.h"
 
 
-CScopedLogger* CStation::g_log = CScopedLogger::create("Station");
+CScopedLogger* CStation::ms_pLogger = CScopedLogger::create("Station");
 
 CStation::CStation(
     Vector blip,

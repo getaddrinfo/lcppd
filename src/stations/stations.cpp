@@ -8,7 +8,7 @@
 
 #define MAX_NUM_BLIPS 3
 
-CScopedLogger* CStationMgr::g_log = CScopedLogger::create("StationManager");
+CScopedLogger* CStationMgr::ms_pLogger = CScopedLogger::create("StationManager");
 CStationMgr::CStationMgr() {}
 
 bool compareDistance(std::pair<CStation*, float> a, std::pair<CStation*, float> b)
@@ -17,11 +17,11 @@ bool compareDistance(std::pair<CStation*, float> a, std::pair<CStation*, float> 
 }
 
 void CStationMgr::render() {
-    g_log->trace("rendering station icons");
+    ms_pLogger->trace("rendering station icons");
     CPed* ped = CPlayerInfo::GetPlayerInfo(CWorld::PlayerInFocus)->m_pPlayerPed;
 
     if(ped == nil) {
-        g_log->trace("ped is nil - cannot render icons...");
+        ms_pLogger->trace("ped is nil - cannot render icons...");
     };
 
     // first, work out distances to all police stations
@@ -42,7 +42,7 @@ void CStationMgr::render() {
             stream << "distance calculated: ";
             stream << distance;
 
-            g_log->trace(stream.str());
+            ms_pLogger->trace(stream.str());
         }        
 
         distances.push_back(std::make_pair(station, distance));
@@ -60,11 +60,11 @@ void CStationMgr::render() {
         if (CLogger::isEnabled(ELL_TRACE)) {
             std::ostringstream stream;
             stream << "closest: (x = " << elem.first->m_pBlipVector->x << ", y = " << elem.first->m_pBlipVector->y << ", z = " << elem.first->m_pBlipVector->z << ")";
-            g_log->trace(stream.str());
+            ms_pLogger->trace(stream.str());
         }
 
         elem.first->placeBlip();
     }
 
-    g_log->trace("rendered station icons");
+    ms_pLogger->trace("rendered station icons");
 }

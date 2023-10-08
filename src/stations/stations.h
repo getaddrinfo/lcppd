@@ -6,7 +6,7 @@
 
 class CStationMgr
 {
-    static CScopedLogger* g_log;
+    static CScopedLogger* ms_pLogger;
 
     CStation* g_stations[15] = {
         new CStation(Vector{93.5, 1212.0, 13.74}, Vector{84.0, 1240.0, 14.5}, 90),

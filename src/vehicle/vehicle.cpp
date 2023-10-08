@@ -1,6 +1,6 @@
 #include "vehicle.h"
 
-CScopedLogger* CDutyVehicle::g_log = CScopedLogger::create("DutyVehicle");
+CScopedLogger* CDutyVehicle::ms_pLogger = CScopedLogger::create("DutyVehicle");
 
 CDutyVehicle::CDutyVehicle(Scripting::Vehicle handle) {
     std::ostringstream stream;
@@ -15,7 +15,7 @@ CDutyVehicle::CDutyVehicle(Scripting::Vehicle handle) {
     addBlip();
 
     stream << "registered duty vehicle: " << m_sModelName;
-    g_log->info(stream.str());
+    ms_pLogger->info(stream.str());
 }  
 
 // This constructor is useful for debugging...
@@ -49,7 +49,7 @@ CDutyVehicle::CDutyVehicle(std::string model) {
 
     std::ostringstream stream;
     stream << "registered duty vehicle: " << m_sModelName;
-    g_log->info(stream.str());
+    ms_pLogger->info(stream.str());
 }
 
 CDutyVehicle::~CDutyVehicle() {

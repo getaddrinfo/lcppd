@@ -1,7 +1,7 @@
 #include "calloutmgr.h"
 #include "core/scopedlogger.h"
 
-CScopedLogger* CCalloutMgr::g_log = CScopedLogger::create("CalloutManager");
+CScopedLogger* CCalloutMgr::ms_pLogger = CScopedLogger::create("CalloutManager");
 
 std::vector<ICallout*> CCalloutMgr::m_registeredCallouts;
 ICallout* CCalloutMgr::m_currentlyActiveCallout = nil;
@@ -23,7 +23,7 @@ ICallout* CCalloutMgr::active() {
 }
 
 CCalloutMgr::~CCalloutMgr() {
-    g_log->trace("releaing callouts");
+    ms_pLogger->trace("releaing callouts");
 
     // we know we keep a reference to the callout in 
     // m_registeredCallouts as well...
@@ -36,5 +36,5 @@ CCalloutMgr::~CCalloutMgr() {
         delete callout;
     }
 
-    g_log->trace("released ...");
+    ms_pLogger->trace("released ...");
 }

@@ -14,7 +14,7 @@ private:
     static ICallout* m_currentlyActiveCallout;
 
 public:
-    static CScopedLogger* g_log;
+    static CScopedLogger* ms_pLogger;
 
     static void add(ICallout *callout);
     static ICallout* random();

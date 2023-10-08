@@ -9,7 +9,7 @@
 class CDutyVehicle
 {
 public:
-    static CScopedLogger* g_log;
+    static CScopedLogger* ms_pLogger;
 
     Scripting::Vehicle m_vehicleHandle;
     Scripting::Blip m_blipHandle;
