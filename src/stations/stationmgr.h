@@ -4,9 +4,15 @@
 #include "station.h"
 #include "core/scopedlogger.h"
 
+#define MAX_NUM_BLIPS 3
+#define NUM_FRAMES_FOR_MAP_RECALC 200
+
 class CStationMgr
 {
     static CScopedLogger* ms_pLogger;
+    static bool m_bShowAllBlips;
+    
+    int m_nFrames;
 
     CStation* g_stations[15] = {
         new CStation(Vector{93.5, 1212.0, 13.74}, Vector{84.0, 1240.0, 14.5}, 90),
@@ -31,7 +37,15 @@ public:
     CStationMgr();
     ~CStationMgr();
     
-    void render();
+    void onTick();
+
+    void drawMapBlips();
+    void drawCheckpoints();
+
+
+    void showAllBlips();
+    void showNearbyBlips();
+
 };
 
 #endif _STATIONS_H
