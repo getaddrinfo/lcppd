@@ -1,6 +1,6 @@
 #include "vehicle.h"
 
-CScopedLogger* CDutyVehicle::ms_pLogger = CScopedLogger::create("DutyVehicle");
+CScopedLogger* CDutyVehicle::ms_pLogger = CScopedLogger::create("Vehicle");
 
 CDutyVehicle::CDutyVehicle(Scripting::Vehicle handle) {
     std::ostringstream stream;
