@@ -2,32 +2,25 @@
 #include "core/common.h"
 
 #include "stations/station.cpp"
-#include "stations/stations.cpp"
+#include "stations/stationmgr.cpp"
+
 #include "vehicle/vehicle.cpp"
 
-auto logr = CScopedLogger::create("main");
+auto logr = CScopedLogger::create("dllmain");
 auto stationManager = new CStationMgr();
-
-#define RENDER_STATIONS_JOB_MUST_REACH 200
-static int renderStationsJobFrameCounter = RENDER_STATIONS_JOB_MUST_REACH;
-static int* htmlViewportHandle;
 
 static CDutyVehicle* dutyVehicle = nil;
 
 void onLoad()
 {
-    CLogger::setLevel(ELL_DEBUG);
+    CLogger::init();
+    CLogger::setLevel(LOG_LEVEL_DEBUG);
     logr->info("loaded");
 };
 
 void onProcessScriptsEvent()
 {
-    if (renderStationsJobFrameCounter == RENDER_STATIONS_JOB_MUST_REACH) {
-        stationManager->render();
-        renderStationsJobFrameCounter = 0;
-    }
-
-    renderStationsJobFrameCounter++;
+    stationManager->onTick();
 
     if (Scripting::IS_GAME_KEYBOARD_KEY_JUST_PRESSED(KEY_PERIOD))
     {
