@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <string>
-#include <windows.h>
+
+#ifdef IS_DEVELOPMENT
+    #include <windows.h>
+#endif
 
 using std::string;
 
