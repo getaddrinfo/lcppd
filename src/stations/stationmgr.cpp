@@ -8,7 +8,9 @@
 CScopedLogger* CStationMgr::ms_pLogger = CScopedLogger::create("StationManager", LOG_LEVEL_DEBUG);
 bool CStationMgr::m_bShowAllBlips = false; 
 
-CStationMgr::CStationMgr() {}
+CStationMgr::CStationMgr() {
+    m_pInterior = nil;
+}
 
 bool compareDistance(std::pair<CStation*, float> a, std::pair<CStation*, float> b)
 {
@@ -21,22 +23,37 @@ void CStationMgr::onTick() {
     if(m_nFrames % NUM_FRAMES_FOR_MAP_RECALC == 0) {
         drawMapBlips();
     }
+    
+    if (m_pInterior != nil) {
+        // if it's finished, dealloc it
+        if (m_pInterior->m_bIsFinished) {
+            delete m_pInterior;
+            m_pInterior = nil;
+        } else {
+            m_pInterior->onTick();
+        }
+    }
 
     for (CStation* station : g_stations) {
         station->render();
 
-        if (station->m_bHasCheckpoint && station->inCheckpointBounds()) {
+        // if the station has a checkpoint, and we have
+        // no interior manager, and we are in the checkpoint,
+        // teleport to the interior
+        if (station->m_bHasCheckpoint && m_pInterior == nil && station->inCheckpointBounds()) {
             ms_pLogger->debug("in checkpoint bounds!");
+            m_pInterior = new CInteriorMgr(station);
+            m_pInterior->teleport();
         }
     }
 }
 
 void CStationMgr::drawMapBlips() {
-    // we assume that if we want to show all blips,
-    // then there is some call doing this work for us...
-    if (m_bShowAllBlips) return;
-
-
+    // if m_bShowAllBlips is true, drawing work is done elsewhere
+    //
+    // if m_pInterior->m_bIsActive then we don't want to show icons on the map
+    // as we are actually in a police station
+    if (m_bShowAllBlips || (m_pInterior != nil && m_pInterior->m_bIsActive)) return;
 
     ms_pLogger->trace("rendering station icons");
     CPed* ped = CPlayerInfo::GetPlayerInfo(CWorld::PlayerInFocus)->m_pPlayerPed;

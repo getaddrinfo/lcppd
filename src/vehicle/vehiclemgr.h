@@ -7,6 +7,12 @@ class CVehicleMgr
 {
 public:
     static std::string g_possibleVehicles[7];
+    
+    bool m_bIsPickingVehicle;
+    void onTick();
+
+    CVehicleMgr();
+    ~CVehicleMgr();
 };
 
 #endif _VEHICLE_MGR_H

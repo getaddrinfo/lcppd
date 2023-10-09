@@ -1,7 +1,8 @@
-#ifndef _STATIONS_H
-#define _STATIONS_H
+#ifndef _STATIONS_MGR_H
+#define _STATIONS_MGR_H
 
 #include "station.h"
+#include "interiormgr.h"
 #include "core/scopedlogger.h"
 
 #define MAX_NUM_BLIPS 3
@@ -13,6 +14,7 @@ class CStationMgr
     static bool m_bShowAllBlips;
     
     int m_nFrames;
+    CInteriorMgr* m_pInterior;
 
     CStation* g_stations[15] = {
         new CStation(Vector{93.5, 1212.0, 13.74}, Vector{84.0, 1240.0, 14.5}, 90),
@@ -48,4 +50,4 @@ public:
 
 };
 
-#endif _STATIONS_H
+#endif _STATIONS_MGR_H

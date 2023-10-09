@@ -10,3 +10,10 @@ std::string CVehicleMgr::g_possibleVehicles[7] = {
     "pstockade",
     "nstockade"
 };
+
+CVehicleMgr::CVehicleMgr() {}
+CVehicleMgr::~CVehicleMgr() {}
+
+void CVehicleMgr::onTick() {
+
+}
