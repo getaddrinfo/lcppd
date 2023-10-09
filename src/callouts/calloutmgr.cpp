@@ -3,36 +3,38 @@
 
 CScopedLogger* CCalloutMgr::ms_pLogger = CScopedLogger::create("CalloutManager");
 
-std::vector<ICallout*> CCalloutMgr::m_registeredCallouts;
-ICallout* CCalloutMgr::m_currentlyActiveCallout = nil;
+CCalloutMgr::CCalloutMgr() {
+    m_vRegisteredCallouts = {};
+    m_pCurrentlyActiveCallout = nil;
+}
 
 void CCalloutMgr::add(ICallout* callout) {
-    m_registeredCallouts.push_back(callout);
+    m_vRegisteredCallouts.push_back(callout);
 }
 
 // TODO: is this an appropriate random sourcing for callouts?
 ICallout* CCalloutMgr::random() {
-    auto front = m_registeredCallouts.begin();
-    std::advance(front, std::rand() % m_registeredCallouts.size());
+    auto front = m_vRegisteredCallouts.begin();
+    std::advance(front, std::rand() % m_vRegisteredCallouts.size());
 
     return *front;
 }
 
 ICallout* CCalloutMgr::active() {
-    return m_currentlyActiveCallout;
+    return m_pCurrentlyActiveCallout;
 }
 
 CCalloutMgr::~CCalloutMgr() {
     ms_pLogger->trace("releaing callouts");
 
     // we know we keep a reference to the callout in 
-    // m_registeredCallouts as well...
-    if (m_currentlyActiveCallout != nil) {
-        m_currentlyActiveCallout = nil;
+    // m_vRegisteredCallouts as well...
+    if (m_pCurrentlyActiveCallout != nil) {
+        m_pCurrentlyActiveCallout = nil;
     }
 
     // cleanup pointers to registered callouts...
-    for(auto callout: m_registeredCallouts) {
+    for(auto callout: m_vRegisteredCallouts) {
         delete callout;
     }
 

@@ -9,17 +9,18 @@
 
 class CCalloutMgr
 {
-private:
-    static std::vector<ICallout*> m_registeredCallouts;
-    static ICallout* m_currentlyActiveCallout;
-
 public:
     static CScopedLogger* ms_pLogger;
 
-    static void add(ICallout *callout);
-    static ICallout* random();
-    static ICallout* active();
+    std::vector<ICallout*> m_vRegisteredCallouts;
+    ICallout* m_pCurrentlyActiveCallout;
 
+
+    void add(ICallout *callout);
+    ICallout* random();
+    ICallout* active();
+
+    CCalloutMgr();
     ~CCalloutMgr();
 };
 
