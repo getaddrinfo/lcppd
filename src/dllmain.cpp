@@ -1,15 +1,18 @@
 #include "core/ivsdk.h"
 #include "core/common.h"
 
+#include "callouts/calloutmgr.cpp"
+
+#include "stations/interiormgr.cpp"
 #include "stations/station.cpp"
 #include "stations/stationmgr.cpp"
 
 #include "vehicle/vehicle.cpp"
 
-auto logr = CScopedLogger::create("dllmain");
-auto stationManager = new CStationMgr();
+CScopedLogger* logr = CScopedLogger::create("dllmain");
 
-static CDutyVehicle* dutyVehicle = nil;
+CStationMgr* stationManager = new CStationMgr();
+CCalloutMgr* calloutManager = new CCalloutMgr();
 
 void onLoad()
 {
@@ -20,24 +23,28 @@ void onLoad()
 
 void onProcessScriptsEvent()
 {
-    stationManager->onTick();
-
-    if (Scripting::IS_GAME_KEYBOARD_KEY_JUST_PRESSED(KEY_PERIOD))
+    // unload
+    if (Scripting::IS_KEYBOARD_KEY_PRESSED(KEY_RIGHT_ALT) && Scripting::IS_KEYBOARD_KEY_JUST_PRESSED(KEY_BACKSPACE))
     {
-        if(dutyVehicle != nil) {
-            logr->warn("duty vehicle already registered");
-            return;
-        }
-
-        logr->debug("KEY_PERIOD pressed - spawning noose via scripting api");
-        
-        dutyVehicle = new CDutyVehicle("noose");
-
-        std::ostringstream stream;
-        stream << "spawned noose (veh = " << dutyVehicle->m_vehicleHandle << ", blip = " << dutyVehicle->m_blipHandle << ") " << dutyVehicle;
-        logr->debug(stream.str());
+        logr->warn("reloading ...");
+        reload();
+        logr->info("reloaded");
+        return;
     }
+
+    stationManager->onTick();
 };
+
+void reload()
+{
+    // dealloc
+    delete stationManager;
+    delete calloutManager;
+
+    // reassign
+    stationManager = new CStationMgr();
+    calloutManager = new CCalloutMgr();
+}
 
 void plugin::gameStartupEvent() 
 {
