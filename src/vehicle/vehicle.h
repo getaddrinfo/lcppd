@@ -4,7 +4,9 @@
 #include "core/common.h"
 #include "core/scopedlogger.h"
 #include "core/ivsdk.h"
+
 #include <string>
+#include <sstream>
 
 class CDutyVehicle
 {
